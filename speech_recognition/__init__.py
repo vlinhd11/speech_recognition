@@ -637,8 +637,8 @@ class Recognizer(AudioSource):
         assert key is None or isinstance(key, str), "`key` must be `None` or a string"
         assert isinstance(language, str), "`language` must be a string"
 
-        flac_data = audio_data.get_flac_data(
-            convert_rate = None if audio_data.sample_rate >= 8000 else 8000, # audio samples must be at least 8 kHz
+        flac_data = audio_data.get_raw_data(
+            convert_rate = None if audio_data.sample_rate >= 16000 else 16000, # audio samples must be at least 16 kHz
             convert_width = 2 # audio samples must be 16-bit
         )
         if key is None: key = "AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw"
@@ -647,7 +647,7 @@ class Recognizer(AudioSource):
             "lang": language,
             "key": key,
         }))
-        request = Request(url, data = flac_data, headers = {"Content-Type": "audio/x-flac; rate={0}".format(audio_data.sample_rate)})
+        request = Request(url, data = flac_data, headers = {"Content-Type": "audio/l16; rate={0}".format(audio_data.sample_rate)})
 
         # obtain audio transcription results
         try:
